@@ -1,0 +1,6 @@
+#
+# Run pip install -r requirements.txt
+#
+nose
+docutils
+pygments

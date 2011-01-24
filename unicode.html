@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="version" content="S5 1.1" />
+<title>Unicode In Python, Completely Demystified</title>
+<meta name="author" content="Kumar McMillan" />
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 6253 2010-03-02 00:24:53Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: left }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<script src="ui/default/slides.js" type="text/javascript"></script>
+<link rel="stylesheet" href="ui/default/slides.css"
+      type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/default/outline.css"
+      type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/default/print.css"
+      type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/default/opera.css"
+      type="text/css" media="projection" id="operaFix" />
+
+<style type="text/css">
+#currentSlide {display: none;}
+</style>
+</head>
+<body>
+<div class="layout">
+<div id="controls"></div>
+<div id="currentSlide"></div>
+<div id="header">
+
+</div>
+<div id="footer">
+<h1>Unicode In Python, Completely Demystified</h1>
+
+</div>
+</div>
+<div class="presentation">
+<div class="slide" id="slide0">
+<h1 class="title">Unicode In Python, Completely Demystified</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Kumar McMillan</td></tr>
+<tr class="field"><th class="docinfo-name">Location:</th><td class="field-body">PyCon 2008, Chicago</td>
+</tr>
+<tr class="field"><th class="docinfo-name">URL:</th><td class="field-body"><a class="reference external" href="http://farmdev.com/talks/unicode/">http://farmdev.com/talks/unicode/</a></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<div class="slide" id="what-does-this-mean">
+<h1>What does this mean?</h1>
+<pre class="literal-block">
+UnicodeDecodeError: 'ascii' codec
+can't decode byte 0xc4 in position
+10: ordinal not in range(128)
+</pre>
+<ul class="incremental simple">
+<li>Never seen this exception?</li>
+<li>Seen it and sort of fixed it?</li>
+<li>This is a confusing error</li>
+</ul>
+<ul class="handout simple">
+<li>If you've never seen this before but want to write Python code, this talk is for you</li>
+<li>If you've seen this before and have no idea how to solve it, this talk is for you</li>
+<li>This is a really confusing error if you don't know what Python is trying to do for you; this talk aims to clarify</li>
+</ul>
+</div>
+<div class="slide" id="overview">
+<h1>Overview</h1>
+<ul class="simple">
+<li>The truth about strings in Python</li>
+<li>The magic of Unicode</li>
+<li>How to work with Unicode in Python 2<ul>
+<li>fundamental concept</li>
+<li>example code</li>
+</ul>
+</li>
+<li>Glimpse at Unicode in Python 3</li>
+<li>Ask lots of questions</li>
+<li>Corrections?</li>
+</ul>
+</div>
+<div class="slide" id="why-use-unicode-in-python">
+<h1>Why use Unicode in Python?</h1>
+<ul class="incremental simple">
+<li>handle non-English languages</li>
+<li>use 3rd party modules</li>
+<li>accept arbitrary text input</li>
+<li>you will love Unicode</li>
+<li>you will hate Unicode</li>
+</ul>
+</div>
+<div class="slide" id="web-application">
+<h1>Web application</h1>
+<img alt="images/text-lifecycle-web.png" src="images/text-lifecycle-web.png" />
+<pre class="handout literal-block">
+[form input] =&gt; [Python] =&gt; [HTML]
+</pre>
+<ul class="handout simple">
+<li>accepts input as text</li>
+<li>writes text to an html file</li>
+</ul>
+</div>
+<div class="slide" id="interacting-with-a-database">
+<h1>Interacting with a database</h1>
+<img alt="images/text-lifecycle-db.png" src="images/text-lifecycle-db.png" />
+<pre class="handout literal-block">
+[read from DB] =&gt; [Python] =&gt; [write to DB]
+</pre>
+<ul class="handout simple">
+<li>accepts input as text</li>
+<li>writes text to the database</li>
+</ul>
+</div>
+<div class="slide" id="command-line-script">
+<h1>Command line script</h1>
+<img alt="images/text-lifecycle-script.png" src="images/text-lifecycle-script.png" />
+<pre class="handout literal-block">
+[text files] =&gt; [Python] =&gt; [stdout]
+</pre>
+<ul class="handout simple">
+<li>accepts input as text</li>
+<li>writes text to stdout or other files</li>
+</ul>
+</div>
+<div class="slide" id="let-s-open-a-utf-8-file">
+<h1>Let's open a UTF-8 file</h1>
+<div class="section" id="ivan-krstic">
+<h2>Ivan Krstić</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_utf8.txt&#39;</span>, <span style="color: #BA2121">&#39;r&#39;</span>)
+<span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8 <span style="color: #666666">=</span> f<span style="color: #666666">.</span>read()
+<span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
+<span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
+</pre></div>
+<ul class="handout simple">
+<li>Ivan Krstić is the director of security architecture at OLPC</li>
+<li>pretend you opened this in a desktop text editor (nothing fancy like vi)
+and you saved it in UTF-8 format.  This might not have been the default.</li>
+<li>now you are opening the file in Python</li>
+</ul>
+</div>
+</div>
+<div class="slide" id="what-is-it">
+<h1>What is it?</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
+<span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000">type</span>(ivan_utf8)
+<span style="color: #666666">&lt;</span><span style="color: #008000">type</span> <span style="color: #BA2121">&#39;str&#39;</span><span style="color: #666666">&gt;</span>
+</pre></div>
+<ul class="incremental simple">
+<li>a string of bytes!</li>
+<li>1 byte = 8 bits</li>
+<li>A bit is either &quot;0&quot; or &quot;1&quot;</li>
+</ul>
+</div>
+<div class="slide" id="text-is-encoded">
+<h1>Text is encoded</h1>
+<div class="section" id="id1">
+<h2>Ivan Krstić</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
+</pre></div>
+<ul class="incremental simple">
+<li>This string is encoded in UTF-8 format</li>
+<li>An encoding is a set of rules that assign numeric values to each text character</li>
+<li>Notice the c with a hachek takes up 2 bytes</li>
+<li>Other encodings might represent ć differently</li>
+<li>Python stdlib supports over 100 encodings</li>
+</ul>
+<ul class="handout simple">
+<li>c with a hachek is part of the Croatian language</li>
+<li>each encoding has its own byte representation of text</li>
+</ul>
+</div>
+</div>
+<div class="slide" id="ascii">
+<h1>ASCII</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+<col width="16%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><strong>char</strong></td>
+<td>I</td>
+<td>v</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr><td><strong>hex</strong></td>
+<td>\x49</td>
+<td>\x76</td>
+<td>\x61</td>
+<td>\x6e</td>
+</tr>
+<tr><td><strong>decimal</strong></td>
+<td>73</td>
+<td>118</td>
+<td>97</td>
+<td>110</td>
+</tr>
+</tbody>
+</table>
+<ul class="incremental simple">
+<li>UTF-8 is an extension of ASCII</li>
+<li>created in 1963 as the <strong>American</strong> Standard Code for Information Interchange</li>
+<li>each character is 1 byte</li>
+<li>128 possible characters</li>
+</ul>
+</div>
+<div class="slide" id="id2">
+<h1>ASCII</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+<col width="12%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><strong>char</strong></td>
+<td>K</td>
+<td>r</td>
+<td>s</td>
+<td>t</td>
+<td>i</td>
+<td>ć</td>
+</tr>
+<tr><td><strong>hex</strong></td>
+<td>\x4b</td>
+<td>\x76</td>
+<td>\x72</td>
+<td>\x74</td>
+<td>\x69</td>
+<td>nope</td>
+</tr>
+<tr><td><strong>decimal</strong></td>
+<td>75</td>
+<td>118</td>
+<td>114</td>
+<td>116</td>
+<td>105</td>
+<td>sorry</td>
+</tr>
+</tbody>
+</table>
+<ul class="incremental simple">
+<li>ć cannot be encoded as ASCII</li>
+<li>d'oh!</li>
+</ul>
+</div>
+<div class="slide" id="built-in-string-types">
+<h1>built-in string types</h1>
+<p>(Python 2)</p>
+<pre class="literal-block">
+&lt;type 'basestring'&gt;
+   |
+   +--&lt;type 'str'&gt;
+   |
+   +--&lt;type 'unicode'&gt;
+</pre>
+</div>
+<div class="slide" id="important-methods">
+<h1>Important methods</h1>
+<div class="section" id="s-decode-encoding">
+<h2>s.decode(<em>encoding</em>)</h2>
+<ul class="simple">
+<li><tt class="docutils literal">&lt;type 'str'&gt;</tt> to <tt class="docutils literal">&lt;type 'unicode'&gt;</tt></li>
+</ul>
+</div>
+<div class="section" id="u-encode-encoding">
+<h2>u.encode(<em>encoding</em>)</h2>
+<ul class="simple">
+<li><tt class="docutils literal">&lt;type 'unicode'&gt;</tt> to <tt class="docutils literal">&lt;type 'str'&gt;</tt></li>
+</ul>
+</div>
+</div>
+<div class="slide" id="the-problem">
+<h1>The problem</h1>
+<p>Can't my Python text remain encoded?</p>
+<div class="section" id="id3">
+<h2>Ivan Krstić</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
+<span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000">len</span>(ivan_utf8)
+<span style="color: #666666">12</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8[<span style="color: #666666">-1</span>]
+<span style="color: #BA2121">&#39;</span><span style="color: #BB6622; font-weight: bold">\x87</span><span style="color: #BA2121">&#39;</span>
+</pre></div>
+<ul class="handout simple">
+<li>isn't encoded text good enough?  No decoding errors anywhere</li>
+<li>is the length of Ivan Krstić really 12?<ul>
+<li>what happens if the text were encoded differently?</li>
+</ul>
+</li>
+<li>is the last character really hexadecimal 87?  Is that what I wanted?</li>
+</ul>
+</div>
+</div>
+<div class="slide" id="unicode-is-more-accurate">
+<h1>Unicode is more accurate</h1>
+<div class="section" id="id4">
+<h2>Ivan Krstić</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
+<span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni <span style="color: #666666">=</span> ivan_utf8<span style="color: #666666">.</span>decode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
+<span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000">type</span>(ivan_uni)
+<span style="color: #666666">&lt;</span><span style="color: #008000">type</span> <span style="color: #BA2121">&#39;unicode&#39;</span><span style="color: #666666">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="slide" id="id5">
+<h1>Unicode is more accurate</h1>
+<div class="section" id="id6">
+<h2>Ivan Krstić</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
+<span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000">len</span>(ivan_uni)
+<span style="color: #666666">11</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni[<span style="color: #666666">-1</span>]
+<span style="color: #BA2121">u&#39;</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="slide" id="unicode-what-is-it">
+<h1>Unicode, what is it?</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+</pre></div>
+<ul class="incremental simple">
+<li>a way to represent text without bytes</li>
+<li>unique number (code point) for each character of every language</li>
+<li>supports all major languages written today</li>
+<li>defines over 1 million code points</li>
+</ul>
+<ul class="handout simple">
+<li>supports...<ul>
+<li>European alphabets</li>
+<li>Middle Eastern right-to-left</li>
+<li>scripts of Asia</li>
+<li>technical math symbols</li>
+<li>et cetera</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="slide" id="unicode-the-ideal">
+<h1>Unicode, the ideal</h1>
+<p>If ASCII, UTF-8, and other byte strings are &quot;text&quot; ...</p>
+<p class="incremental big">...then Unicode is &quot;text-ness&quot;;</p>
+<p class="incremental huge">it is the abstract form of text</p>
+<ul class="handout simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Platonic_idealism">http://en.wikipedia.org/wiki/Platonic_idealism</a></li>
+</ul>
+</div>
+<div class="slide" id="unicode-is-a-concept">
+<h1>Unicode is a concept</h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><strong>letter</strong></td>
+<td><strong>Unicode Code Point</strong></td>
+</tr>
+<tr><td>ć</td>
+<td>\u0107</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>to save Unicode to disk you have to encode it</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="25%" />
+<col width="23%" />
+<col width="30%" />
+</colgroup>
+<tbody valign="top">
+<tr><td colspan="4">Byte Encodings</td>
+</tr>
+<tr><td><strong>letter</strong></td>
+<td><strong>UTF-8</strong></td>
+<td><strong>UTF-16</strong></td>
+<td><strong>Shift-JIS</strong></td>
+</tr>
+<tr><td>ć</td>
+<td>\xc4\x87</td>
+<td>\x07\x01</td>
+<td>\x85\xc9</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="slide" id="unicode-transformation-format">
+<h1>Unicode Transformation Format</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ab <span style="color: #666666">=</span> <span style="color: #008000">unicode</span>(<span style="color: #BA2121">&#39;AB&#39;</span>)
+</pre></div>
+<div class="section" id="utf-8">
+<h2>UTF-8</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ab<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<span style="color: #BA2121">&#39;AB&#39;</span>
+</pre></div>
+<ul class="incremental simple">
+<li>variable byte representation</li>
+<li>first 128 characters encoded just like ASCII</li>
+<li>1 byte (8 bits) to 4 bytes per code point</li>
+</ul>
+</div>
+</div>
+<div class="slide" id="id7">
+<h1>Unicode Transformation Format</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ab <span style="color: #666666">=</span> <span style="color: #008000">unicode</span>(<span style="color: #BA2121">&#39;AB&#39;</span>)
+</pre></div>
+<div class="section" id="utf-16">
+<h2>UTF-16</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ab<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-16&#39;</span>)
+<span style="color: #BA2121">&#39;</span><span style="color: #BB6622; font-weight: bold">\xff\xfe</span><span style="color: #BA2121">A</span><span style="color: #BB6622; font-weight: bold">\x00</span><span style="color: #BA2121">B</span><span style="color: #BB6622; font-weight: bold">\x00</span><span style="color: #BA2121">&#39;</span>
+</pre></div>
+<ul class="incremental simple">
+<li>variable byte representation</li>
+<li>2 bytes (16 bits) to 4 bytes per code point</li>
+<li>optimized for languages residing in the 2 byte character range</li>
+</ul>
+</div>
+</div>
+<div class="slide" id="id8">
+<h1>Unicode Transformation Format</h1>
+<div class="section" id="utf-32">
+<h2>UTF-32</h2>
+<ul class="incremental simple">
+<li>fixed width byte representation, fastest</li>
+<li>4 bytes (32 bits) per code point</li>
+<li>not supported in Python</li>
+</ul>
+</div>
+</div>
+<div class="slide" id="unicode-chart">
+<h1>Unicode chart</h1>
+<div class="section" id="ian-albert-s-unicode-chart">
+<h2>Ian Albert's Unicode chart</h2>
+<ul class="incremental simple">
+<li>this guy decided to print the entire Unicode chart</li>
+<li>1,114,112 code points</li>
+<li>6 feet by 12 feet</li>
+<li>22,017 × 42,807 pixels</li>
+</ul>
+</div>
+</div>
+<div class="slide" id="id9">
+<h1>Unicode chart</h1>
+<img alt="images/unichart-printed.jpg" src="images/unichart-printed.jpg" />
+<p class="handout">Ian Albert's Unicode chart.  Says it only cost him $20 at Kinko's but he was pretty sure they rang him up wrong.</p>
+</div>
+<div class="slide" id="unicode-chart-50">
+<h1>Unicode chart 50 %</h1>
+<img alt="images/unichart-50.jpg" src="images/unichart-50.jpg" />
+</div>
+<div class="slide" id="unicode-chart-100">
+<h1>Unicode chart 100 %</h1>
+<img alt="images/unichart-100.jpg" src="images/unichart-100.jpg" />
+</div>
+<div class="slide" id="decoding-text-into-unicode">
+<h1>Decoding text into Unicode</h1>
+<ul class="incremental simple">
+<li>It's mostly automatic</li>
+<li>this happens a lot in 3rd party modules</li>
+<li>Python will try to decode it for you</li>
+</ul>
+</div>
+<div class="slide" id="python-magic">
+<h1>Python magic</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
+<span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan.txt&#39;</span>, <span style="color: #BA2121">&#39;w&#39;</span>)
+<span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>write(ivan_uni)
+Traceback (most recent call last):
+<span style="color: #666666">...</span>
+<span style="color: #D2413A; font-weight: bold">UnicodeEncodeError</span>: <span style="color: #BA2121">&#39;ascii&#39;</span> codec can<span style="color: #BA2121">&#39;t encode character u&#39;</span>\u0107<span style="color: #BA2121">&#39; in position 10: ordinal not in range(128)</span>
+</pre></div>
+</div>
+<div class="slide" id="python-magic-revealed">
+<h1>Python magic, revealed</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
+<span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan.txt&#39;</span>, <span style="color: #BA2121">&#39;w&#39;</span>)
+<span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">sys</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>write(ivan_uni<span style="color: #666666">.</span>encode(
+<span style="color: #666666">...</span>         sys<span style="color: #666666">.</span>getdefaultencoding()))
+<span style="color: #666666">...</span>
+Traceback (most recent call last):
+<span style="color: #666666">...</span>
+<span style="color: #D2413A; font-weight: bold">UnicodeEncodeError</span>: <span style="color: #BA2121">&#39;ascii&#39;</span> codec can<span style="color: #BA2121">&#39;t encode character u&#39;</span>\u0107<span style="color: #BA2121">&#39; in position 10: ordinal not in range(128)</span>
+</pre></div>
+</div>
+<div class="slide" id="gasp">
+<h1>Gasp!</h1>
+<p class="center huge">THE DEFAULT
+ENCODING FOR
+PYTHON 2
+IS ASCII</p>
+</div>
+<div class="slide" id="just-reset-it">
+<h1>Just reset it?!</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">sys<span style="color: #666666">.</span>setdefaultencoding(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
+</pre></div>
+<ul class="incremental simple">
+<li>can't I just put this in <tt class="docutils literal">sitecustomize.py</tt>?</li>
+<li>No!</li>
+<li>your code will not work on other Python installations</li>
+<li>more trouble than it's worth</li>
+</ul>
+</div>
+<div class="slide" id="solution">
+<h1>Solution</h1>
+<ol class="incremental big arabic simple">
+<li><strong>Decode</strong> early</li>
+<li><strong>Unicode</strong> everywhere</li>
+<li><strong>Encode</strong> late</li>
+</ol>
+</div>
+<div class="slide" id="decode-early">
+<h1>1. Decode early</h1>
+<p>Decode to <tt class="docutils literal">&lt;type 'unicode'&gt;</tt> ASAP</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">to_unicode_or_bust</span>(
+<span style="color: #666666">...</span>         obj, encoding<span style="color: #666666">=</span><span style="color: #BA2121">&#39;utf-8&#39;</span>):
+<span style="color: #666666">...</span>     <span style="color: #008000; font-weight: bold">if</span> <span style="color: #008000">isinstance</span>(obj, <span style="color: #008000">basestring</span>):
+<span style="color: #666666">...</span>         <span style="color: #008000; font-weight: bold">if</span> <span style="color: #AA22FF; font-weight: bold">not</span> <span style="color: #008000">isinstance</span>(obj, <span style="color: #008000">unicode</span>):
+<span style="color: #666666">...</span>             obj <span style="color: #666666">=</span> <span style="color: #008000">unicode</span>(obj, encoding)
+<span style="color: #666666">...</span>     <span style="color: #008000; font-weight: bold">return</span> obj
+<span style="color: #666666">...</span>
+<span style="color: #666666">&gt;&gt;&gt;</span>
+</pre></div>
+<p class="handout">detects if object is a string and if so converts to unicode, if not already.</p>
+</div>
+<div class="slide" id="unicode-everywhere">
+<h1>2. Unicode everywhere</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> to_unicode_or_bust(ivan_uni)
+<span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> to_unicode_or_bust(ivan_utf8)
+<span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> to_unicode_or_bust(<span style="color: #666666">1234</span>)
+<span style="color: #666666">1234</span>
+</pre></div>
+</div>
+<div class="slide" id="encode-late">
+<h1>3. Encode late</h1>
+<p>Encode to <tt class="docutils literal">&lt;type 'str'&gt;</tt> when you write to disk or <strong>print</strong></p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_out.txt&#39;</span>,<span style="color: #BA2121">&#39;w&#39;</span>)
+<span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>write(ivan_uni<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-8&#39;</span>))
+<span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>close()
+</pre></div>
+</div>
+<div class="slide" id="shortcuts">
+<h1>Shortcuts</h1>
+<div class="section" id="codecs-open">
+<h2>codecs.open()</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> codecs<span style="color: #666666">.</span>open(<span style="color: #BA2121">&#39;/tmp/ivan_utf8.txt&#39;</span>, <span style="color: #BA2121">&#39;r&#39;</span>,
+<span style="color: #666666">...</span>                 encoding<span style="color: #666666">=</span><span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<span style="color: #666666">...</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>read()
+<span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>close()
+</pre></div>
+</div>
+</div>
+<div class="slide" id="id10">
+<h1>Shortcuts</h1>
+<div class="section" id="id11">
+<h2>codecs.open()</h2>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> codecs<span style="color: #666666">.</span>open(<span style="color: #BA2121">&#39;/tmp/ivan_utf8.txt&#39;</span>, <span style="color: #BA2121">&#39;w&#39;</span>,
+<span style="color: #666666">...</span>                 encoding<span style="color: #666666">=</span><span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<span style="color: #666666">...</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>write(ivan_uni)
+<span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>close()
+</pre></div>
+</div>
+</div>
+<div class="slide" id="python-2-unicode-incompatibility">
+<h1>Python 2 Unicode incompatibility</h1>
+<ul class="simple">
+<li>some 3rd party modules incompatible<ul>
+<li>submit bugs!</li>
+</ul>
+</li>
+<li>some builtin modules are incompatible<ul>
+<li>csv</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="slide" id="python-2-unicode-workarounds">
+<h1>Python 2 Unicode workarounds</h1>
+<ul class="simple">
+<li>momentarily encode as UTF-8, then decode immediately</li>
+<li>csv documentation shows you how to do this</li>
+</ul>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_bytes <span style="color: #666666">=</span> ivan_uni<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #408080; font-style: italic"># do stuff</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> ivan_bytes<span style="color: #666666">.</span>decode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+</pre></div>
+</div>
+<div class="slide" id="the-bom">
+<h1>The BOM</h1>
+<ul class="incremental simple">
+<li>sometimes at beginning of files</li>
+<li>Byte Order Mark</li>
+<li>essential for UTF-16, UTF-32 files<ul>
+<li>Little Endian (MSB first)</li>
+<li>Big Endian (MSB last)</li>
+</ul>
+</li>
+<li>UTF-8 BOM just says &quot;I am UTF-8&quot;<ul>
+<li>popular in Windows</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="slide" id="detecting-the-bom">
+<h1>Detecting the BOM</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_utf16.txt&#39;</span>,<span style="color: #BA2121">&#39;r&#39;</span>)
+<span style="color: #666666">&gt;&gt;&gt;</span> sample <span style="color: #666666">=</span> f<span style="color: #666666">.</span>read(<span style="color: #666666">4</span>)
+<span style="color: #666666">&gt;&gt;&gt;</span> sample
+<span style="color: #BA2121">&#39;</span><span style="color: #BB6622; font-weight: bold">\xff\xfe</span><span style="color: #BA2121">I</span><span style="color: #BB6622; font-weight: bold">\x00</span><span style="color: #BA2121">&#39;</span>
+</pre></div>
+<ul class="simple">
+<li>BOM can be 2, 3, or 4 bytes long</li>
+</ul>
+</div>
+<div class="slide" id="id12">
+<h1>Detecting the BOM</h1>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> (sample<span style="color: #666666">.</span>startswith(codecs<span style="color: #666666">.</span>BOM_UTF16_LE) <span style="color: #AA22FF; font-weight: bold">or</span>
+<span style="color: #666666">...</span>  sample<span style="color: #666666">.</span>startswith(codecs<span style="color: #666666">.</span>BOM_UTF16_BE))
+<span style="color: #666666">...</span>
+<span style="color: #008000">True</span>
+<span style="color: #666666">&gt;&gt;&gt;</span> sample<span style="color: #666666">.</span>startswith(codecs<span style="color: #666666">.</span>BOM_UTF8)
+<span style="color: #008000">False</span>
+</pre></div>
+</div>
+<div class="slide" id="do-i-have-to-remove-the-bom">
+<h1>Do I have to remove the BOM?</h1>
+<ul class="incremental simple">
+<li>maybe</li>
+<li>decoding UTF-16 removes the BOM automatically</li>
+<li>but not UTF-8<ul>
+<li><em>unless</em> you say <tt class="docutils literal"><span class="pre">s.decode('utf-8-sig')</span></tt><ul>
+<li>available since Python 2.5</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="slide" id="how-do-you-guess-an-encoding">
+<h1>How do you guess an encoding?</h1>
+<ul class="incremental simple">
+<li>There is no reliable way to guess an encoding</li>
+<li>BOM gives you a clue</li>
+<li><tt class="docutils literal"><span class="pre">Content-type</span></tt> header usually contains <tt class="docutils literal"><span class="pre">charset=...</span></tt></li>
+<li>chardet module tries<ul>
+<li><a class="reference external" href="http://chardet.feedparser.org/">http://chardet.feedparser.org/</a></li>
+<li>port of Mozilla encoding detection</li>
+</ul>
+</li>
+<li>UTF-8 is your best guess</li>
+</ul>
+</div>
+<div class="slide" id="summary-of-problems">
+<h1>Summary of problems</h1>
+<ul class="incremental simple">
+<li>default Python 2 encoding is 'ascii'</li>
+<li>files might contain a BOM</li>
+<li>not all Python 2 internals support Unicode</li>
+<li>You can't reliably guess an encoding</li>
+</ul>
+</div>
+<div class="slide" id="summary-of-solutions">
+<h1>Summary of solutions</h1>
+<ul class="incremental simple">
+<li>Decode early, Unicode everywhere, encode late</li>
+<li>write wrappers for modules that don't like Unicode</li>
+<li>Always put Unicode in unit tests</li>
+<li>UTF-8 is the best guess for an encoding<ul>
+<li>use the BOM to guess encodings</li>
+<li>or use chardet.detect()</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="slide" id="unicode-in-python-3">
+<h1>Unicode in Python 3</h1>
+<ul class="incremental simple">
+<li>they fixed Unicode!</li>
+<li><tt class="docutils literal">&lt;type 'str'&gt;</tt> is a Unicode object</li>
+<li>separate <tt class="docutils literal">&lt;type 'bytes'&gt;</tt> type</li>
+<li>all builtin modules support Unicode</li>
+<li>no more <tt class="docutils literal">u'text'</tt> syntax</li>
+</ul>
+</div>
+<div class="slide" id="id13">
+<h1>Unicode in Python 3</h1>
+<ul class="incremental simple">
+<li><tt class="docutils literal">open()</tt> takes an encoding argument, like <tt class="docutils literal">codecs.open()</tt></li>
+<li>default encoding is UTF-8 not ASCII<ul>
+<li>woo!</li>
+</ul>
+</li>
+<li>Tries to guess the file encoding<ul>
+<li>You will still need to declare encodings</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="slide" id="fin">
+<h1>Fin</h1>
+<ul class="incremental simple">
+<li>Thanks Leapfrog Online</li>
+<li>Stop by our booth...<ul>
+<li>we're hiring Python devs</li>
+<li>sign up to win a <strong>Wii</strong></li>
+<li>get a <strong>nosetests</strong> t-shirts<ul>
+<li>we love testing!</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>slides at <a class="reference external" href="http://farmdev.com/talks/unicode/">http://farmdev.com/talks/unicode/</a></li>
+</ul>
+<ul class="incremental huge simple">
+<li>Questions?</li>
+</ul>
+</div>
+</div>
+</body>
+</html>

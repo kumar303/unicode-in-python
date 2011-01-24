@@ -1,0 +1,315 @@
+
+Unicode In Python, Completely Demystified
+=========================================
+
+.. contents::
+
+Summary
+-------
+
+This talks aims to make every single last person in the audience understand exactly how to write unicode-aware applications in Python 2.  If necessary, we will move to a Birds of Feather gathering, to the bar, to your hotel room, I'll start hanging around your cube at work -- whatever it takes -- until you completely "get it."  But it's really simple so bring an open mind, a notepad, and get ready to create bullet proof Python software that can read and write text in Arabic, Russian, Chinese, Klingon, et cetera.  As a citizen of the Python community you have the responsibility of creating unicode-aware applications!
+
+Detailed Speaking Notes
+-----------------------
+
+Is this talk for me?
+~~~~~~~~~~~~~~~~~~~~
+
+If you have seen this error and know *exactly* how to solve it, then this talk is **not** for you::
+
+    UnicodeDecodeError: 'ascii' codec can't decode byte 0xc4 in position 10: ordinal not in range(128)
+    
+If you are completely baffled by this or even slightly unsure, then stick around.  Locate the nearest microphone and keep in mind there are no stupid questions.  If I lose you at any point along the way, jot down a note and pose a question at the end.
+
+We use text
+~~~~~~~~~~~
+
+A typical Python application looks something like this::
+
+    [world] => <information> => text => munge => text => file
+
+(in a better diagram of course).
+
+Specific examples
++++++++++++++++++
+
+- web application
+  
+  - accepts input as text
+  - writes text to an html file
+
+- database application
+
+  - accepts input as text
+  - writes text to the database
+
+- command line script
+
+  - accepts input as text
+  - writes text to stdout
+
+What is text?
+~~~~~~~~~~~~~
+
+- a string of bytes, that's it!
+
+  - a byte is a set of 8 bits
+  - a bit is one unit of information, either "0" or "1"
+
+(ok, that's not it...)
+
+Text is encoded
++++++++++++++++
+
+- text can only be stored on disk in an encoded form
+- an "encoding" is a set of rules that assign a numeric value to each text character in the file
+- Python ships with over a hundred encoding standards
+- ASCII
+    
+  - "American Standard Code for Information Interchange"
+  - each character is 1 byte
+  - 128 possible characters
+  - standard published 1963
+  
+    - most people were still trying to figure out how to use the telephone in 1963- encodings
+  
+  - ASCII is a limited character set 
+  - Anything complicated like é or ب ج‎can't be encoded as ASCII
+
+- LATIN-1 (ISO 8859-1) a little bit better
+- UTF-8 is the most versatile encoding
+- Still, there is no consistent byte representations of encodings
+
+Text is decoded
++++++++++++++++
+
+- into glyphs?
+
+- need unicode?  no
+- but ... yes
+- php : no native unicode support
+- ruby : no native unicode support
+  
+  - shift_JS encoding
+  - picture of Matz in python shirt!
+
+The problem
+~~~~~~~~~~~
+
+Consider the name "Ivan Krstić."  You can't type this into most terminals.  If you open a file with most text editors, however, it will seemlessly save it to disk.  How does it do that?  It probably automatically encoded the text as UTF-8.  Let's see::
+
+    >>> f = open('/tmp/ivan.txt')
+    >>> ivan_bytes = f.read()
+    >>> ivan_bytes
+    'Ivan Krsti\xc4\x87'
+    >>> type(ivan_bytes)
+    <type 'str'>
+
+- By default, Python 2.4 and 2.5 handle all text as ASCII
+
+
+The solution
+~~~~~~~~~~~~
+
+Unicode!  All characters can be represented in unicode.
+
+"Unicode is the Platonic Ideal of text; Strings are the shadows on the wall." -- Pete Fein
+
+The catch
+~~~~~~~~~
+
+Unicode, in all its purity, cannot be written to disk, saved in a file, nor saved in a database.  
+
+So ... how do I do that?
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+At the boundaries of your application decode/encode str objects and within your application represent everything in unicode objects.
+
+Transforming a unicode object into a sequence of bytes is called encoding and recreating the unicode object from the sequence of bytes is known as decoding
+
+Without external information it's impossible to reliably determine which encoding was used for encoding a Unicode string
+
+str vs. unicode
++++++++++++++++
+
+- str object
+  
+  - a bytestring
+  - 
+
+- unicode object
+  
+  - developed by "Unicode Consortium"
+  - unicode - each character is a "code point"
+     
+    - a "code point" may be stored as multiple bytes and varies between machines 
+    - unicode is abstract, thus it cannot be written to disk until it is "encoded" into a bytestring
+    - standard first published 1991
+    - (show partial table of unicode code points to characters)
+
+- unicode makes encoding and decoding something you rarely have to worry about
+
+An example
+++++++++++
+
+Consider the name "Ivan Krstić."  If you open a text editor, copy/paste in this name, save it, then open it again in a program you get a string of bytes::
+ 
+    >>> ivan = "Ivan Krsti\xc4\x87"
+    >>> type(ivan)
+    <type 'str'>
+
+The **first** thing you should do is convert that string to unicode::
+
+    >>> ivan_in_unicode = ivan.decode('utf-8')
+    >>> type(ivan_in_unicode)
+    <type 'unicode'>
+    >>> ivan_in_unicode
+    u'Ivan Krsti\u0107'
+
+Or::
+    
+    >>> ivan_in_unicode = unicode(ivan, 'utf-8')
+    >>> type(ivan_in_unicode)
+    <type 'unicode'>
+    >>> ivan_in_unicode
+    u'Ivan Krsti\u0107'
+
+Notice how the ć here is represented as code point 0x0107 in hexadecimal (263 in decimal).
+
+In functions where text will enter for the first time, check that the text is unicode like this::
+ 
+    >>> if isinstance(ivan, basestring):
+    ...     if not isinstance(ivan, unicode):
+    ...         ivan = unicode(ivan, 'utf-8')
+    ... 
+    >>> 
+
+Although it is confusing, take note that ``unicode(ivan, 'utf-8')`` is exactly the same as ``ivan.decode('utf-8')`` -- they both return a unicode object.
+
+At the point you output text, encode it into a bytestring::
+
+    >>> ivan_as_str_again = ivan_in_unicode.encode('utf-8')
+    >>> ivan_as_str_again
+    'Ivan Krsti\xc4\x87'
+    >>> 
+
+If this were encoded as UTF-16, notice how the byte representation would vary::
+
+    >>> ivan_as_str_again = ivan_in_unicode.encode('utf-16')
+    >>> ivan_as_str_again
+    '\xff\xfeI\x00v\x00a\x00n\x00 \x00K\x00r\x00s\x00t\x00i\x00\x07\x01'
+    >>> 
+
+If outputting to HTML, you need to specify the encoding::
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    </head>
+    <body>
+        Ivan Krstić
+    </body>
+    </html>
+
+Still not convinced you need to work with unicode objects?  If you start with an encoded byte string, can't you just use that everywhere and never have to worry about unicode?  The answer is "sometimes, yes."  But unicode is more accurate, take this for example::
+
+    >>> ivan = "Ivan Krsti\xc4\x87"
+    >>> ivan_in_unicode = unicode(ivan, 'utf-8')
+    >>> ivan[-6:-1]
+    'rsti\xc4'
+    >>> ivan_in_unicode[-6:-1]
+    u'Krsti'
+
+Unicode will always give you consistent slicing.
+
+Also, in a where clause, where last_name = "Krsti\xc4\x87" will only work if the database had encoded its contents in UTF8
+
+sys.setdefaultencoding() -- Don't Do it!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You may have been told to simply place sys.setdefaultencoding('utf-8') in your sitecustomize.py file and all your problems will go away.  They will.  That is, *your* problems.  But as soon as someone else runs your app on a default install of python 2 then your code will break.  Just don't do it.  Your code will be way more portable if do all the encoding/decoding yourself.
+
+Working with databases
+~~~~~~~~~~~~~~~~~~~~~~
+
+If you're working 3rd party database modules then [hopefully] you will only need to worry about decoding your application's incoming strings into unicode objects.
+
+Working with file objects
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+codecs module for reading and writings files in unicode
+
+[code examples]
+
+Guessing encodings
+~~~~~~~~~~~~~~~~~~
+
+chardet
++++++++
+
+chardet module for guessing encodings
+
+[code examples]
+
+The BOM
++++++++
+
+The Byte Order Mark and how to account for it
+
+[code examples]
+
+Unicode in Python 3
+~~~~~~~~~~~~~~~~~~~
+
+Python 3 is on the visible horizon, but reality is that Python 2 code will need to be supported for quite some time, especially in open source libraries.
+
+Python 3 greatly simplifies unicode handling and offers these great enhancements:
+
+- sys.getdefaultencoding() is 'utf-8' by default
+- all str instances are unicode objects
+- a separate bytes object available for binary data
+- using open() on a file and reading it returns unicode objects
+  
+  - looks for the BOM
+  - you can specify the encoding
+  - uses your locale encoding
+    
+    - this won't be good enough so you'll still need to know all this!
+    
+Python 3000
+- Read operations on binary streams return bytes arrays, while read operations on text streams return (Unicode) text strings; and similar for write operations. Writing a text string to a binary stream or a bytes array to a text stream will raise an exception.
+
+Finding Fonts To Display Unicode
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- How do you find system fonts that will display the unicode you want to print?
+- A `Java solution`_
+  
+  - Python equivalent?
+  - java.awt.Font.canDisplayUpTo()
+  
+    - Indicates whether or not this Font can display the specified String
+
+.. _Java solution: http://java.sun.com/j2se/1.4.2/docs/api/java/awt/Font.html
+
+Source Articles
+---------------
+
+- http://www.pyzine.com/Issue008/Section_Articles/article_Encodings.html
+- http://www.joelonsoftware.com/articles/Unicode.html
+- http://www.amk.ca/python/howto/unicode
+- http://effbot.org/zone/unicode-objects.htm
+- http://www.voidspace.org.uk/python/articles/guessing_encoding.shtml
+- http://farmdev.com/thoughts/23/what-i-thought-i-knew-about-unicode-in-python-amounted-to-nothing/
+- http://java.sun.com/j2se/1.4.2/docs/api/java/awt/Font.html
+- http://docs.python.org/lib/encodings-overview.html
+- http://www.artima.com/weblogs/viewpost.jsp?thread=208549
+- http://python.org/dev/peps/pep-3000/
+
+A Personal Note
+---------------
+
+I attended a Unicode talk at the last Pycon before I understood Unicode.  The room was completely packed and the audience was hungry for answers.  However, the speaker didn't really understand Unicode himself and thus the talk gave some code snippets to address his specific problems but glossed over *why* that code was necessary.  I walked away from the talk just as baffled as I was beforehand.
+
+
+
