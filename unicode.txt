@@ -6,6 +6,7 @@ Unicode In Python, Completely Demystified
 :Author: Kumar McMillan
 :Location: PyCon 2008, Chicago
 :URL: http://farmdev.com/talks/unicode/
+:Source: https://github.com/kumar303/unicode-in-python
 
 
 What does this mean?
