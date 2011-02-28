@@ -22,20 +22,9 @@ def main():
     check_call(['nosetests', '--with-doctest', '--doctest-extension=txt',
                 './unicode.txt'])
     output = './unicode.html'
-    check_call(['./custom_rst2s5.py', './unicode.txt', './unicode.html'])
+    check_call(['./custom_rst2s5.py', './unicode.txt', './index.html'])
     print "Wrote %s" % output
-    if options.upload:
-        farmdev = os.environ['FARMDEV_HOST']
-        check_call(['scp', 'unicode.html',
-                    '%s:~/www/farmdev/talks/unicode/index.html' % farmdev])
-        rsync = ['rsync', '-auv', '--exclude=.DS_Store', '--exclude=.svn']
-        check_call(rsync +
-                   ['images/',
-                    '%s:~/www/farmdev/talks/unicode/images' % farmdev])
-        check_call(rsync +
-                   ['ui/',
-                    '%s:~/www/farmdev/talks/unicode/ui' % farmdev])
-    check_call(['open', './unicode.html'])
+    check_call(['open', './index.html'])
 
 if __name__ == '__main__':
     main()
