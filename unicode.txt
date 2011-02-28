@@ -591,8 +591,8 @@ The BOM
     - Byte Order Mark
     - essential for UTF-16, UTF-32 files
       
-      - Little Endian (MSB first)
-      - Big Endian (MSB last)
+      - Big Endian (MSB first)
+      - Little Endian (LSB first)
     
     - UTF-8 BOM just says "I am UTF-8"
       
