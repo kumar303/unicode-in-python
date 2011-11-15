@@ -24,7 +24,7 @@ def main():
     output = './unicode.html'
     check_call(['./custom_rst2s5.py', './unicode.txt', './index.html'])
     print "Wrote %s" % output
-    check_call(['open', './index.html'])
+    check_call(['xdg-open', './index.html'])
 
 if __name__ == '__main__':
     main()
