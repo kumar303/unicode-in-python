@@ -524,7 +524,7 @@ Encode to ``<type 'str'>`` when you write to disk or **print**
 
 .. code-block:: python
     
-    >>> f = open('/tmp/ivan_out.txt','w')
+    >>> f = open('/tmp/ivan_out.txt','wb')
     >>> f.write(ivan_uni.encode('utf-8'))
     >>> f.close()
 
