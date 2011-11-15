@@ -3,6 +3,7 @@ import os
 import optparse
 from subprocess import check_call
 import codecs
+import webbrowser
 
 def setup_doctest():
     u = 'Ivan Krsti\xc4\x87'.decode('utf-8')
@@ -24,7 +25,13 @@ def main():
     output = './unicode.html'
     check_call(['./custom_rst2s5.py', './unicode.txt', './index.html'])
     print "Wrote %s" % output
-    check_call(['xdg-open', './index.html'])
+    try:
+        check_call(['xdg-open', './index.html'])
+    except OSError: # Platform not freedesktop.org-compatible
+        if os.platform = 'darwin':
+            check_call(['open', './index.html'])
+        else:
+            webbrowser.open('file://' + os.path.join(os.getcwd(), 'index.html'))
 
 if __name__ == '__main__':
     main()
