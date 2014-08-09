@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.8.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Unicode In Python, Completely Demystified</title>
 <meta name="author" content="Kumar McMillan" />
@@ -11,7 +11,7 @@
 
 /*
 :Author: David Goodger (goodger@python.org)
-:Id: $Id: html4css1.css 7056 2011-06-17 10:50:48Z milde $
+:Id: $Id: html4css1.css 7614 2013-02-21 15:55:51Z milde $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
@@ -79,7 +79,7 @@ div.tip p.admonition-title {
 
 div.attention p.admonition-title, div.caution p.admonition-title,
 div.danger p.admonition-title, div.error p.admonition-title,
-div.warning p.admonition-title {
+div.warning p.admonition-title, .code .error {
   color: red ;
   font-weight: bold ;
   font-family: sans-serif }
@@ -251,9 +251,18 @@ pre.address {
   margin-top: 0 ;
   font: inherit }
 
-pre.literal-block, pre.doctest-block, pre.math {
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
   margin-left: 2em ;
   margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
 
 span.classifier {
   font-family: sans-serif ;
@@ -305,6 +314,21 @@ table.docutils th.field-name, table.docinfo th.docinfo-name {
   text-align: left ;
   white-space: nowrap ;
   padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
 
 h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
 h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
@@ -443,7 +467,7 @@ can't decode byte 0xc4 in position
 <h1>Let's open a UTF-8 file</h1>
 <div class="section" id="ivan-krstic">
 <h2>Ivan Krstić</h2>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_utf8.txt&#39;</span>, <span style="color: #BA2121">&#39;r&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_utf8.txt&#39;</span>, <span style="color: #BA2121">&#39;r&#39;</span>)
 <span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8 <span style="color: #666666">=</span> f<span style="color: #666666">.</span>read()
 <span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
 <span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
@@ -458,7 +482,7 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 </div>
 <div class="slide" id="what-is-it">
 <h1>What is it?</h1>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
 <span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000">type</span>(ivan_utf8)
 <span style="color: #666666">&lt;</span><span style="color: #008000">type</span> <span style="color: #BA2121">&#39;str&#39;</span><span style="color: #666666">&gt;</span>
@@ -473,7 +497,7 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 <h1>Text is encoded</h1>
 <div class="section" id="id1">
 <h2>Ivan Krstić</h2>
-<div class="highlight"><pre><span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
 </pre></div>
 <ul class="incremental simple">
 <li>This string is encoded in UTF-8 format</li>
@@ -601,7 +625,7 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 <p>Can't my Python text remain encoded?</p>
 <div class="section" id="id3">
 <h2>Ivan Krstić</h2>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
 <span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000">len</span>(ivan_utf8)
 <span style="color: #666666">12</span>
@@ -622,7 +646,7 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 <h1>Unicode is more accurate</h1>
 <div class="section" id="id4">
 <h2>Ivan Krstić</h2>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_utf8
 <span style="color: #BA2121">&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\xc4\x87</span><span style="color: #BA2121">&#39;</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni <span style="color: #666666">=</span> ivan_utf8<span style="color: #666666">.</span>decode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
 <span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
@@ -636,7 +660,7 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 <h1>Unicode is more accurate</h1>
 <div class="section" id="id6">
 <h2>Ivan Krstić</h2>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
 <span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000">len</span>(ivan_uni)
 <span style="color: #666666">11</span>
@@ -647,7 +671,7 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 </div>
 <div class="slide" id="unicode-what-is-it">
 <h1>Unicode, what is it?</h1>
-<div class="highlight"><pre><span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
 </pre></div>
 <ul class="incremental simple">
 <li>a way to represent text without bytes</li>
@@ -719,11 +743,11 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 </div>
 <div class="slide" id="unicode-transformation-format">
 <h1>Unicode Transformation Format</h1>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ab <span style="color: #666666">=</span> <span style="color: #008000">unicode</span>(<span style="color: #BA2121">&#39;AB&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ab <span style="color: #666666">=</span> <span style="color: #008000">unicode</span>(<span style="color: #BA2121">&#39;AB&#39;</span>)
 </pre></div>
 <div class="section" id="utf-8">
 <h2>UTF-8</h2>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ab<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ab<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
 <span style="color: #BA2121">&#39;AB&#39;</span>
 </pre></div>
 <ul class="incremental simple">
@@ -735,11 +759,11 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 </div>
 <div class="slide" id="id7">
 <h1>Unicode Transformation Format</h1>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ab <span style="color: #666666">=</span> <span style="color: #008000">unicode</span>(<span style="color: #BA2121">&#39;AB&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ab <span style="color: #666666">=</span> <span style="color: #008000">unicode</span>(<span style="color: #BA2121">&#39;AB&#39;</span>)
 </pre></div>
 <div class="section" id="utf-16">
 <h2>UTF-16</h2>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ab<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-16&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ab<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-16&#39;</span>)
 <span style="color: #BA2121">&#39;</span><span style="color: #BB6622; font-weight: bold">\xff\xfe</span><span style="color: #BA2121">A</span><span style="color: #BB6622; font-weight: bold">\x00</span><span style="color: #BA2121">B</span><span style="color: #BB6622; font-weight: bold">\x00</span><span style="color: #BA2121">&#39;</span>
 </pre></div>
 <ul class="incremental simple">
@@ -795,7 +819,7 @@ and you saved it in UTF-8 format.  This might not have been the default.</li>
 </div>
 <div class="slide" id="python-magic">
 <h1>Python magic</h1>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
 <span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan.txt&#39;</span>, <span style="color: #BA2121">&#39;w&#39;</span>)
 <span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>write(ivan_uni)
@@ -806,7 +830,7 @@ Traceback (most recent call last):
 </div>
 <div class="slide" id="python-magic-revealed">
 <h1>Python magic, revealed</h1>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_uni
 <span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan.txt&#39;</span>, <span style="color: #BA2121">&#39;w&#39;</span>)
 <span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">sys</span>
@@ -827,7 +851,7 @@ IS ASCII</p>
 </div>
 <div class="slide" id="just-reset-it">
 <h1>Just reset it?!</h1>
-<div class="highlight"><pre>sys<span style="color: #666666">.</span>setdefaultencoding(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">sys<span style="color: #666666">.</span>setdefaultencoding(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
 </pre></div>
 <ul class="incremental simple">
 <li>can't I just put this in <tt class="docutils literal">sitecustomize.py</tt>?</li>
@@ -847,7 +871,7 @@ IS ASCII</p>
 <div class="slide" id="decode-early">
 <h1>1. Decode early</h1>
 <p>Decode to <tt class="docutils literal">&lt;type 'unicode'&gt;</tt> ASAP</p>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">to_unicode_or_bust</span>(
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">to_unicode_or_bust</span>(
 <span style="color: #666666">...</span>         obj, encoding<span style="color: #666666">=</span><span style="color: #BA2121">&#39;utf-8&#39;</span>):
 <span style="color: #666666">...</span>     <span style="color: #008000; font-weight: bold">if</span> <span style="color: #008000">isinstance</span>(obj, <span style="color: #008000">basestring</span>):
 <span style="color: #666666">...</span>         <span style="color: #008000; font-weight: bold">if</span> <span style="color: #AA22FF; font-weight: bold">not</span> <span style="color: #008000">isinstance</span>(obj, <span style="color: #008000">unicode</span>):
@@ -860,7 +884,7 @@ IS ASCII</p>
 </div>
 <div class="slide" id="unicode-everywhere">
 <h1>2. Unicode everywhere</h1>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> to_unicode_or_bust(ivan_uni)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> to_unicode_or_bust(ivan_uni)
 <span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> to_unicode_or_bust(ivan_utf8)
 <span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
@@ -871,7 +895,7 @@ IS ASCII</p>
 <div class="slide" id="encode-late">
 <h1>3. Encode late</h1>
 <p>Encode to <tt class="docutils literal">&lt;type 'str'&gt;</tt> when you write to disk or <strong>print</strong></p>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_out.txt&#39;</span>,<span style="color: #BA2121">&#39;wb&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_out.txt&#39;</span>,<span style="color: #BA2121">&#39;wb&#39;</span>)
 <span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>write(ivan_uni<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-8&#39;</span>))
 <span style="color: #666666">&gt;&gt;&gt;</span> f<span style="color: #666666">.</span>close()
 </pre></div>
@@ -880,7 +904,7 @@ IS ASCII</p>
 <h1>Shortcuts</h1>
 <div class="section" id="codecs-open">
 <h2>codecs.open()</h2>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> codecs<span style="color: #666666">.</span>open(<span style="color: #BA2121">&#39;/tmp/ivan_utf8.txt&#39;</span>, <span style="color: #BA2121">&#39;r&#39;</span>,
 <span style="color: #666666">...</span>                 encoding<span style="color: #666666">=</span><span style="color: #BA2121">&#39;utf-8&#39;</span>)
 <span style="color: #666666">...</span>
@@ -894,7 +918,7 @@ IS ASCII</p>
 <h1>Shortcuts</h1>
 <div class="section" id="id11">
 <h2>codecs.open()</h2>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> codecs<span style="color: #666666">.</span>open(<span style="color: #BA2121">&#39;/tmp/ivan_utf8.txt&#39;</span>, <span style="color: #BA2121">&#39;w&#39;</span>,
 <span style="color: #666666">...</span>                 encoding<span style="color: #666666">=</span><span style="color: #BA2121">&#39;utf-8&#39;</span>)
 <span style="color: #666666">...</span>
@@ -922,7 +946,7 @@ IS ASCII</p>
 <li>momentarily encode as UTF-8, then decode immediately</li>
 <li>csv documentation shows you how to do this</li>
 </ul>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> ivan_bytes <span style="color: #666666">=</span> ivan_uni<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> ivan_bytes <span style="color: #666666">=</span> ivan_uni<span style="color: #666666">.</span>encode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
 <span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #408080; font-style: italic"># do stuff</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> ivan_bytes<span style="color: #666666">.</span>decode(<span style="color: #BA2121">&#39;utf-8&#39;</span>)
 <span style="color: #BA2121">u&#39;Ivan Krsti</span><span style="color: #BB6622; font-weight: bold">\u0107</span><span style="color: #BA2121">&#39;</span>
@@ -946,7 +970,7 @@ IS ASCII</p>
 </div>
 <div class="slide" id="detecting-the-bom">
 <h1>Detecting the BOM</h1>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_utf16.txt&#39;</span>,<span style="color: #BA2121">&#39;r&#39;</span>)
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> f <span style="color: #666666">=</span> <span style="color: #008000">open</span>(<span style="color: #BA2121">&#39;/tmp/ivan_utf16.txt&#39;</span>,<span style="color: #BA2121">&#39;r&#39;</span>)
 <span style="color: #666666">&gt;&gt;&gt;</span> sample <span style="color: #666666">=</span> f<span style="color: #666666">.</span>read(<span style="color: #666666">4</span>)
 <span style="color: #666666">&gt;&gt;&gt;</span> sample
 <span style="color: #BA2121">&#39;</span><span style="color: #BB6622; font-weight: bold">\xff\xfe</span><span style="color: #BA2121">I</span><span style="color: #BB6622; font-weight: bold">\x00</span><span style="color: #BA2121">&#39;</span>
@@ -957,7 +981,7 @@ IS ASCII</p>
 </div>
 <div class="slide" id="id12">
 <h1>Detecting the BOM</h1>
-<div class="highlight"><pre><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">&gt;&gt;&gt;</span> <span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">codecs</span>
 <span style="color: #666666">&gt;&gt;&gt;</span> (sample<span style="color: #666666">.</span>startswith(codecs<span style="color: #666666">.</span>BOM_UTF16_LE) <span style="color: #AA22FF; font-weight: bold">or</span>
 <span style="color: #666666">...</span>  sample<span style="color: #666666">.</span>startswith(codecs<span style="color: #666666">.</span>BOM_UTF16_BE))
 <span style="color: #666666">...</span>
@@ -1023,7 +1047,6 @@ IS ASCII</p>
 <li><tt class="docutils literal">&lt;type 'str'&gt;</tt> is a Unicode object</li>
 <li>separate <tt class="docutils literal">&lt;type 'bytes'&gt;</tt> type</li>
 <li>all builtin modules support Unicode</li>
-<li>no more <tt class="docutils literal">u'text'</tt> syntax</li>
 </ul>
 </div>
 <div class="slide" id="id13">
