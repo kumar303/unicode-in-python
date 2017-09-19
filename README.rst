@@ -5,10 +5,11 @@ It is free to re-use / re-write or anything you want.
 
 The source of the text is contained in unicode.txt
 
-To build the slides create a virtualenv and run::
+To build the slides create a `virtualenv`_ and run::
 
   pip install -r requirements.txt
   python build.py
 
 
 .. _`WTFPL`: http://www.wtfpl.net/about/
+.. _`virtualenv`: https://virtualenv.pypa.io/en/stable/
