@@ -3,7 +3,7 @@ This was a presentation for PyCon 2008 on how to understand Unicode in Python.
 It was mostly focused on Python 2 but the concepts still apply in Python 3,
 especially if you just want to understand dealing with byte code inputs.
 
-View the slides: http://farmdev.com/talks/unicode (please file an issue if it's down)
+View the slides: http://kumar303.github.io/unicode-in-python/
 
 The source is in the public domain under the `WTFPL`_ license.
 It is free to re-use / re-write or anything you want.
